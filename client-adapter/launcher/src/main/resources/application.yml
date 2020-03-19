@@ -52,9 +52,9 @@ canal.conf:
 #      username: root
 #      password: 121212
   canalAdapters:
-  - instance: example # canal instance Name or mq topic name
+  - instance: mryt_vip_t_vip_base_info # canal instance Name or mq topic name
     groups:
-    - groupId: g1
+    - groupId: test
       outerAdapters:
       - name: logger
 #      - name: rdb
