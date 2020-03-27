@@ -1,0 +1,11 @@
+dataSourceKey: defaultDS
+destination: example
+groupId: g1
+redisMapping:
+  keyType: SET  #对应redis里面的类型
+  key: com.mryt.viptests  # redis的key
+  value: user_id     # 数据库表名和字段名
+  condition: "level=2"
+
+
+# 列子 将t_vip_base_info表中的level=2的数据放入redis中。redis的key：com.mryt.viptests;value是：user_id
