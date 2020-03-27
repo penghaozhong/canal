@@ -28,7 +28,11 @@ canal.conf:
     groups:
     - groupId: g1
       outerAdapters:
-      - name: logger
+        - name: redis
+            host: 10.12.0.40
+            port: 6379
+            password: MBkMl4cssBcbet1W
+#      - name: logger
 #      - name: rdb
 #        key: mysql1
 #        properties:
@@ -64,8 +68,4 @@ canal.conf:
 #          # security.auth: test:123456 #  only used for rest mode
 #          cluster.name: elasticsearch
 
-      - name: redis
-          host: 10.12.0.40
-          port: 6379
-          password: MBkMl4cssBcbet1W
 

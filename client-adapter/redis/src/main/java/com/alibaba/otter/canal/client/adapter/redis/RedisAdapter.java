@@ -7,6 +7,7 @@ import com.alibaba.otter.canal.client.adapter.redis.service.RedisSyncService;
 import com.alibaba.otter.canal.client.adapter.support.Dml;
 import com.alibaba.otter.canal.client.adapter.support.OuterAdapterConfig;
 import com.alibaba.otter.canal.client.adapter.support.SPI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -70,7 +71,43 @@ public class RedisAdapter implements OuterAdapter {
     }
 
     @Override public void sync(List<Dml> dmls) {
+        if (dmls == null || dmls.isEmpty()) {
+            return;
+        }
+        for (Dml dml : dmls) {
+            sync(dml);
+        }
+    }
 
+    private void sync(Dml dml) {
+        if (dml == null) {
+            return;
+        }
+        String destination = StringUtils.trimToEmpty(dml.getDestination());
+        String groupId = StringUtils.trimToEmpty(dml.getGroupId());
+        String database = dml.getDatabase();
+        String table = dml.getTable();
+        Map<String, MappingConfig> configMap;
+        if (envProperties != null && !"tcp".equalsIgnoreCase(envProperties.getProperty("canal.conf.mode"))) {
+            configMap = mappingConfigCache.get(destination + "-" + groupId + "_" + database + "-" + table);
+        } else {
+            configMap = mappingConfigCache.get(destination + "_" + database + "-" + table);
+        }
+        if (configMap != null) {
+            List<MappingConfig> configs = new ArrayList<>();
+            configMap.values().forEach(config -> {
+                if (StringUtils.isNotEmpty(config.getGroupId())) {
+                    if (config.getGroupId().equals(dml.getGroupId())) {
+                        configs.add(config);
+                    }
+                } else {
+                    configs.add(config);
+                }
+            });
+            if (!configs.isEmpty()) {
+                configs.forEach(config -> redisSyncService.sync(config, dml));
+            }
+        }
     }
 
     @Override public void destroy() {
