@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * redis 同步操作业务
@@ -21,11 +22,22 @@ public class RedisSyncService {
 
     private JedisConnectionFactory jedisConnectionFactory;
     private RedisTemplate redisTemplate;
+    private  JedisPoolConfig config;
 
     public RedisSyncService(RedisStandaloneConfiguration configuration) {
+        config = new JedisPoolConfig();
+        config.setMaxTotal(200);
+        config.setMaxIdle(50);
+        config.setMinIdle(8);
+        config.setMaxWaitMillis(10000);
+        config.setTestOnBorrow(true);
+        config.setTestOnReturn(true);
         jedisConnectionFactory = new JedisConnectionFactory(configuration);
+        jedisConnectionFactory.setPoolConfig(config);
         redisTemplate =new RedisTemplate();
         redisTemplate.setConnectionFactory(jedisConnectionFactory);
+        jedisConnectionFactory.afterPropertiesSet();
+        redisTemplate.afterPropertiesSet();
     }
 
 

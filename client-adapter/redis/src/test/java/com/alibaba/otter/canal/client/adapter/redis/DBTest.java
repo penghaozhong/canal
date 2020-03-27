@@ -24,20 +24,15 @@ public class DBTest {
         config.setMaxWaitMillis(10000);
         config.setTestOnBorrow(true);
         config.setTestOnReturn(true);
-        config.setTestWhileIdle(true);
-        config.setTimeBetweenEvictionRunsMillis(30000);
-        config.setNumTestsPerEvictionRun(10);
-        config.setMinEvictableIdleTimeMillis(60000);
-        JedisPool pool = new JedisPool(config, "10.12.0.40", 6379, 10000, "MBkMl4cssBcbet1W", 0);
 
-        JedisPoolConfig configuration = new JedisPoolConfig();
         RedisStandaloneConfiguration standaloneConfiguration = new RedisStandaloneConfiguration();
         standaloneConfiguration.setHostName("10.12.0.40");
         standaloneConfiguration.setPort(6379);
 
         standaloneConfiguration.setPassword(RedisPassword.of("MBkMl4cssBcbet1W"));
 
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(config);
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(standaloneConfiguration);
+        jedisConnectionFactory.setPoolConfig(config);
 
         jedisConnectionFactory.afterPropertiesSet();
 
