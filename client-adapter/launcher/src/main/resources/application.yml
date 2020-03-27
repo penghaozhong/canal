@@ -7,10 +7,10 @@ spring:
     default-property-inclusion: non_null
 
 canal.conf:
-  mode: tcp # kafka rocketMQ
-  canalServerHost: 127.0.0.1:11111
+  mode: rocketMQ # kafka rocketMQ
+  #   canalServerHost: 127.0.0.1:11111
 #  zookeeperHosts: slave1:2181
-#  mqServers: 127.0.0.1:9092 #or rocketmq
+  mqServers: 10.12.0.94:9876 #or rocketmq
 #  flatMessage: true
   batchSize: 500
   syncBatchSize: 1000
@@ -24,7 +24,7 @@ canal.conf:
 #      username: root
 #      password: 121212
   canalAdapters:
-  - instance: example # canal instance Name or mq topic name
+  - instance: mryt_vip_t_vip_base_info1 # canal instance Name or mq topic name
     groups:
     - groupId: g1
       outerAdapters:
@@ -32,7 +32,7 @@ canal.conf:
             host: 10.12.0.40
             port: 6379
             password: MBkMl4cssBcbet1W
-#      - name: logger
+        - name: logger
 #      - name: rdb
 #        key: mysql1
 #        properties:
