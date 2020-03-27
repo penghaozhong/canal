@@ -89,6 +89,8 @@ public class MappingConfig implements AdapterConfig {
 
 
     public static class RedisMapping implements AdapterMapping {
+        private String                  database;                                   // 数据库名或schema名
+        private String                  table;
         private String keyType;
         private String key;
         private String value;
@@ -133,6 +135,22 @@ public class MappingConfig implements AdapterConfig {
 
         public void setEtlCondition(String etlCondition) {
             this.etlCondition = etlCondition;
+        }
+
+        public String getDatabase() {
+            return database;
+        }
+
+        public void setDatabase(String database) {
+            this.database = database;
+        }
+
+        public String getTable() {
+            return table;
+        }
+
+        public void setTable(String table) {
+            this.table = table;
         }
     }
 }

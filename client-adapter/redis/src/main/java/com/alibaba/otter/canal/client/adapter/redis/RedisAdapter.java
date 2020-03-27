@@ -45,14 +45,19 @@ public class RedisAdapter implements OuterAdapter {
                 if (envProperties != null && !"tcp".equalsIgnoreCase(envProperties.getProperty("canal.conf.mode"))) {
                     k = StringUtils.trimToEmpty(mappingConfig.getDestination()) + "-"
                         + StringUtils.trimToEmpty(mappingConfig.getGroupId()) + "_"
-                        + mappingConfig.getRedisMapping().getKey();
-                } else {
-                    k = StringUtils.trimToEmpty(mappingConfig.getDestination()) + "_"
-                        + mappingConfig.getRedisMapping().getKey();
+                        + mappingConfig.getRedisMapping().getDatabase() + "-"
+                        + mappingConfig.getRedisMapping().getTable();
                 }
+                else {
+                    k = StringUtils.trimToEmpty(mappingConfig.getDestination()) + "_"
+                        + mappingConfig.getRedisMapping().getDatabase() + "-"
+                        + mappingConfig.getRedisMapping().getTable();
+                }
+
                 Map<String, MappingConfig> configMap = mappingConfigCache.computeIfAbsent(k,
                     k1 -> new ConcurrentHashMap<>());
                 configMap.put(configName, mappingConfig);
+
             }
 
             Map<String, String> properties = configuration.getProperties();

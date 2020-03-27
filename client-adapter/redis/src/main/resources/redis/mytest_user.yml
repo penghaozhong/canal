@@ -1,5 +1,5 @@
 dataSourceKey: defaultDS
-destination: example
+destination: mryt_vip_t_vip_base_info1
 groupId: g1
 redisMapping:
   keyType: SET  #对应redis里面的类型
