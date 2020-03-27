@@ -41,6 +41,11 @@ public class DBTest {
         redisTemplate.afterPropertiesSet();
 
 
-        redisTemplate.opsForValue().set("test11111","33333");
+        redisTemplate.opsForValue().set("test11111","787878");
+
+        Object test11111 = redisTemplate.opsForValue().get("test11111");
+        System.out.println("test11111 = " + test11111);
+
+        redisTemplate.boundListOps("test45").leftPush("dfdfdf");
     }
 }

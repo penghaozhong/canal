@@ -32,11 +32,14 @@ public class RedisSyncService {
         config.setMaxWaitMillis(10000);
         config.setTestOnBorrow(true);
         config.setTestOnReturn(true);
+
         jedisConnectionFactory = new JedisConnectionFactory(configuration);
         jedisConnectionFactory.setPoolConfig(config);
+        jedisConnectionFactory.afterPropertiesSet();
+
         redisTemplate =new RedisTemplate();
         redisTemplate.setConnectionFactory(jedisConnectionFactory);
-        jedisConnectionFactory.afterPropertiesSet();
+
         redisTemplate.afterPropertiesSet();
     }
 
