@@ -15,5 +15,10 @@ public class Test {
         // 执行表达式
         Boolean result = (Boolean) compiledExp.execute(env);
         System.out.println(result);  // false
+
+        Map<String, Object> env1 = new HashMap<String, Object>();
+        env1.put("user_id", 2);
+        String key = (String)AviatorEvaluator.execute("'com:mryt:viptests:'+ user_id", env1);
+        System.out.println("key = " + key);
     }
 }

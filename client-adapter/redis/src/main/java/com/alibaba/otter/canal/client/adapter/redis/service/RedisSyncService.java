@@ -3,6 +3,7 @@ package com.alibaba.otter.canal.client.adapter.redis.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.otter.canal.client.adapter.redis.config.MappingConfig;
 import com.alibaba.otter.canal.client.adapter.support.Dml;
+import com.googlecode.aviator.AviatorEvaluator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class RedisSyncService {
                 insert(config,dml);
             } else if (type != null && type.equalsIgnoreCase("UPDATE")) {
                 logger.info("{}",dml);
+                update(config, dml);
             } else if (type != null && type.equalsIgnoreCase("DELETE")) {
                 logger.info("{}",dml);
             }
@@ -59,6 +61,19 @@ public class RedisSyncService {
         for (Map<String, Object> r : data) {
             redisTemplate.opsForValue().set(hbaseMapping.getKey(), JSON.toJSON(r));
         }
+    }
 
+    private void update(MappingConfig config, Dml dml) {
+        List<Map<String, Object>> data = dml.getData();
+        if (data == null || data.isEmpty()) {
+            return;
+        }
+
+        MappingConfig.RedisMapping hbaseMapping =config.getRedisMapping();
+
+        for (Map<String, Object> r : data) {
+            String key = (String)AviatorEvaluator.execute(hbaseMapping.getKey(), r);
+            redisTemplate.opsForValue().set(key, JSON.toJSON(r));
+        }
     }
 }

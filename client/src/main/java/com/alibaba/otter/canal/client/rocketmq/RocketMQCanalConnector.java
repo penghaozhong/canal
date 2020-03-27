@@ -167,6 +167,7 @@ public class RocketMQCanalConnector implements CanalMQConnector {
         List messageList = Lists.newArrayList();
         for (MessageExt messageExt : messageExts) {
             byte[] data = messageExt.getBody();
+            String temp = new String(data);
             if (data != null) {
                 try {
                     if (!flatMessage) {
