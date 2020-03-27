@@ -5,7 +5,7 @@ redisMapping:
   database: mryt_vip  # 数据库名
   table: t_vip_base_info     # 数据库表名
   keyType: SET  #对应redis里面的类型
-  key: 'com:mryt:viptests:'+ user_id  # redis的key
+  key: "'com:mryt:viptests:'+ user_id"  # redis的key
   value: user_id     # 数据库表名和字段名
   condition: "level=2"
 
