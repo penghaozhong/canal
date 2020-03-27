@@ -64,3 +64,8 @@ canal.conf:
 #          # security.auth: test:123456 #  only used for rest mode
 #          cluster.name: elasticsearch
 
+      - name: redis
+          host: 10.12.0.40
+          port: 6379
+          password: MBkMl4cssBcbet1W
+
