@@ -40,8 +40,10 @@ public class RedisSyncService {
 
         redisTemplate =new RedisTemplate();
         redisTemplate.setConnectionFactory(jedisConnectionFactory);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new FastJsonRedisSerializer<>(Object.class));
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
+        redisTemplate.setValueSerializer(fastJsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
     }
 
