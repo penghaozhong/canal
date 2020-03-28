@@ -5,7 +5,6 @@ import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.alibaba.otter.canal.client.adapter.redis.config.MappingConfig;
 import com.alibaba.otter.canal.client.adapter.support.Dml;
 import com.googlecode.aviator.AviatorEvaluator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
