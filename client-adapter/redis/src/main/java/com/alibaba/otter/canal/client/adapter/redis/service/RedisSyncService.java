@@ -14,7 +14,6 @@ import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -51,6 +50,8 @@ public class RedisSyncService {
         FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         redisTemplate.setValueSerializer(fastJsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
+
+        RedisConnectionUtils.getConnection(jedisConnectionFactory).close();
     }
 
 
