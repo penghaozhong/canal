@@ -10,9 +10,13 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * redis 同步操作业务
@@ -20,12 +24,24 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisSyncService {
     private static final Logger logger  = LoggerFactory.getLogger(RedisSyncService.class);
 
-    private JedisConnectionFactory jedisConnectionFactory;
     private RedisTemplate redisTemplate;
 
     public RedisSyncService(RedisStandaloneConfiguration configuration) {
 
-        jedisConnectionFactory = new JedisConnectionFactory(configuration);
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(200);
+        config.setMaxIdle(50);
+        config.setMinIdle(8);
+        config.setMaxWaitMillis(10000);
+        config.setTestOnBorrow(true);
+        config.setTestOnReturn(true);
+
+        JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder()
+            .usePooling()
+            .poolConfig(config)
+            .build();
+
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(configuration, jedisClientConfiguration);
         jedisConnectionFactory.afterPropertiesSet();
 
         redisTemplate =new RedisTemplate();

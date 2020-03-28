@@ -7,15 +7,31 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.JedisPoolConfig;
 
 @Ignore
 public class DBTest {
 
     @Test
     public void test01() throws SQLException {
+
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(200);
+        config.setMaxIdle(50);
+        config.setMinIdle(8);
+        config.setMaxWaitMillis(10000);
+        config.setTestOnBorrow(true);
+        config.setTestOnReturn(true);
+
+        JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder()
+            .usePooling()
+            .poolConfig(config)
+            .build();
 
 
         RedisStandaloneConfiguration standaloneConfiguration = new RedisStandaloneConfiguration();
@@ -25,10 +41,7 @@ public class DBTest {
         standaloneConfiguration.setDatabase(0);
         standaloneConfiguration.setPassword(RedisPassword.of("MBkMl4cssBcbet1W"));
 
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(standaloneConfiguration);
-
-        System.out.println("jedisConnectionFactory.getDatabase() = " + jedisConnectionFactory.getDatabase());
-
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(standaloneConfiguration, jedisClientConfiguration);
         jedisConnectionFactory.afterPropertiesSet();
 
         RedisTemplate redisTemplate = new RedisTemplate();
@@ -36,6 +49,7 @@ public class DBTest {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new FastJsonRedisSerializer<>(Object.class));
         redisTemplate.afterPropertiesSet();
+
 
 
         redisTemplate.opsForValue().set("test11111","787878");
