@@ -3,10 +3,12 @@ package com.alibaba.otter.canal.client.adapter.redis.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.alibaba.otter.canal.client.adapter.redis.config.MappingConfig;
+import com.alibaba.otter.canal.client.adapter.redis.support.SyncUtil;
 import com.alibaba.otter.canal.client.adapter.support.Dml;
 import com.googlecode.aviator.AviatorEvaluator;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -95,12 +97,26 @@ public class RedisSyncService {
             return;
         }
 
-        MappingConfig.RedisMapping hbaseMapping =config.getRedisMapping();
-
+        MappingConfig.RedisMapping redisMapping =config.getRedisMapping();
         for (Map<String, Object> r : data) {
-            String key = (String)AviatorEvaluator.execute(hbaseMapping.getKey(), r);
-            logger.info("redisTemplate-key={}",key);
-            redisTemplate.opsForValue().set(key, r);
+            //condition
+            if (StringUtils.isNotBlank(redisMapping.getCondition())) {
+                if ((boolean)AviatorEvaluator.execute(redisMapping.getCondition(), r)) {
+                    setData(redisMapping, r);
+                    continue;
+                }
+            }
+
+            setData(redisMapping, r);
+
         }
+    }
+
+
+    private void setData(MappingConfig.RedisMapping redisMapping,Map<String, Object> data){
+        String key = (String)AviatorEvaluator.execute(redisMapping.getKey(), data);
+        Map<String, Object> targetMap = SyncUtil.getTargetMap(redisMapping, data);
+        logger.info("redisTemplate-key={}",key);
+        redisTemplate.opsForValue().set(key, targetMap);
     }
 }

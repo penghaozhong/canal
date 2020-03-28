@@ -4,6 +4,7 @@ import com.alibaba.otter.canal.client.adapter.support.AdapterConfig;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 /**
  * RDB表映射配置
@@ -77,25 +78,33 @@ public class MappingConfig implements AdapterConfig {
             throw new NullPointerException("redisMapping.key");
         }
 
-        if (redisMapping.value == null || redisMapping.value.isEmpty()) {
+        if (!redisMapping.mapAll && CollectionUtils.isEmpty(redisMapping.targetPropertys)) {
             throw new NullPointerException("redisMapping.value");
         }
-
-        if (redisMapping.condition == null || redisMapping.condition.isEmpty()) {
-            throw new NullPointerException("redisMapping.condition");
-        }
-
     }
 
 
     public static class RedisMapping implements AdapterMapping {
-        private String                  database;                                   // 数据库名或schema名
-        private String                  table;
+        /**
+         * 数据库名或schema名
+         */
+        private String database;
+        private String table;
         private String keyType;
         private String key;
-        private String value;
+        /**
+         * 映射所有字段
+         */
+        private boolean  mapAll = false;
+        /**
+         *字段映射
+         */
+        private Map<String, String>  targetPropertys;
         private String condition;
-        private String etlCondition;                        // etl条件sql
+        /**
+         *etl条件sql
+         */
+        private String etlCondition;
 
         @Override public String getEtlCondition() {
             return etlCondition;
@@ -115,14 +124,6 @@ public class MappingConfig implements AdapterConfig {
 
         public void setKey(String key) {
             this.key = key;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
         }
 
         public String getCondition() {
@@ -151,6 +152,22 @@ public class MappingConfig implements AdapterConfig {
 
         public void setTable(String table) {
             this.table = table;
+        }
+
+        public boolean isMapAll() {
+            return mapAll;
+        }
+
+        public void setMapAll(boolean mapAll) {
+            this.mapAll = mapAll;
+        }
+
+        public Map<String, String> getTargetPropertys() {
+            return targetPropertys;
+        }
+
+        public void setTargetPropertys(Map<String, String> targetPropertys) {
+            this.targetPropertys = targetPropertys;
         }
     }
 }

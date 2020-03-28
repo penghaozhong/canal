@@ -6,7 +6,8 @@ redisMapping:
   table: t_vip_base_info     # 数据库表名
   keyType: SET  #对应redis里面的类型
   key: "'com:mryt:viptests:'+ user_id"  # redis的key
-  columns:
+# mapAll: true
+  targetPropertys:
     # 数据库字段:redis对应字段
     user_id: userId
     nick_name: nickName
