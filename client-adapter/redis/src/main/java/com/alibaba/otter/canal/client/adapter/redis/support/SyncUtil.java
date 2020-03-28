@@ -7,20 +7,20 @@ import org.springframework.util.CollectionUtils;
 
 public class SyncUtil {
 
-    public static Map<String, Object> getTargetMap(MappingConfig.RedisMapping dbMapping, Map<String, Object> data) {
+    public static Map<String, Object> getTargetMap(MappingConfig.RedisMapping redisMapping, Map<String, Object> data) {
         Map<String, Object> newMap = new HashMap<>();
-        if (dbMapping.isMapAll()) {
+        if (redisMapping.isMapAll()) {
             return data;
         }
 
-        if (CollectionUtils.isEmpty(dbMapping.getTargetPropertys())) {
+        if (CollectionUtils.isEmpty(redisMapping.getTargetPropertys())) {
             return data;
         }
 
         for (Map.Entry<String, Object> entry : data.entrySet()) {
-            for (Map.Entry<String, String> tentry : dbMapping.getTargetPropertys().entrySet()) {
-                if (entry.getKey().equals(tentry.getValue())) {
-                    newMap.put(tentry.getKey(), entry.getValue());
+            for (Map.Entry<String, String> tentry : redisMapping.getTargetPropertys().entrySet()) {
+                if (entry.getKey().equals(tentry.getKey())) {
+                    newMap.put(tentry.getValue(), entry.getValue());
                     break;
                 }
             }

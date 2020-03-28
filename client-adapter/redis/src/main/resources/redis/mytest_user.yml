@@ -14,7 +14,7 @@ redisMapping:
     phone_number: phoneNumber
     invite_user_id: inviteUserId
     portrait: portrait
-  condition: "level=2"
+  condition: "level==2"
 
 
 #由于redis客户端我们使用的是spring-data-redis，因为拥有很多已集成好的功能了。

@@ -79,7 +79,7 @@ public class MappingConfig implements AdapterConfig {
         }
 
         if (!redisMapping.mapAll && CollectionUtils.isEmpty(redisMapping.targetPropertys)) {
-            throw new NullPointerException("redisMapping.value");
+            throw new NullPointerException("redisMapping.targetPropertys");
         }
     }
 
