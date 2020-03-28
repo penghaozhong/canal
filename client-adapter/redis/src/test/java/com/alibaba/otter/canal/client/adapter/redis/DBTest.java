@@ -5,13 +5,11 @@ import com.alibaba.otter.canal.client.adapter.redis.config.MappingConfig;
 import java.sql.SQLException;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 @Ignore
@@ -63,7 +61,7 @@ public class DBTest {
         MappingConfig mappingConfig = new MappingConfig();
         mappingConfig.setDestination("hah");
         mappingConfig.setGroupId("g1");
-        redisTemplate.opsForValue().set("testobject",mappingConfig);
+        redisTemplate.opsForValue().set("com:mryt:viptests:226739",mappingConfig);
 
         System.out.println("testobject=" + redisTemplate.opsForValue().get("testobject"));
 

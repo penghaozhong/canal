@@ -91,7 +91,10 @@ public class RedisSyncService {
         for (Map<String, Object> r : data) {
             String key = (String)AviatorEvaluator.execute(hbaseMapping.getKey(), r);
             logger.info("redisTemplate-key={}",key);
+
             redisTemplate.opsForValue().set(key, r);
+
+            logger.info("redisTemplate-value={}",redisTemplate.opsForValue().get(key));
         }
     }
 }

@@ -1,5 +1,5 @@
 dataSourceKey: defaultDS
-destination: mryt_vip_t_vip_base_info1
+destination: mryt_vip_t_vip_base_info2
 groupId: g1
 redisMapping:
   database: mryt_vip  # 数据库名
