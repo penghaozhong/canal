@@ -6,8 +6,20 @@ redisMapping:
   table: t_vip_base_info     # 数据库表名
   keyType: SET  #对应redis里面的类型
   key: "'com:mryt:viptests:'+ user_id"  # redis的key
-  value: user_id     # 数据库表名和字段名
+  columns:
+    # 数据库字段:redis对应字段
+    user_id: userId
+    nick_name: nickName
+    phone_number: phoneNumber
+    invite_user_id: inviteUserId
+    portrait: portrait
   condition: "level=2"
 
 
-# 列子 将t_vip_base_info表中的level=2的数据放入redis中。redis的key：com.mryt.viptests;value是：user_id
+#由于redis客户端我们使用的是spring-data-redis，因为拥有很多已集成好的功能了。
+#1. 需要做数据库字段对应 columns 支持一个和多个
+#2. redis keyType设置 常用类型支持如String List Set Zset Hash 等
+#3. redis key 设置     已经完成
+#4. value序列化支持 目前支持三种StringRedisSerializer;FastJsonRedisSerializer;Jackson2JsonRedisSerializer
+#5. redis连接配置
+#6. 条件表达式支持condition
