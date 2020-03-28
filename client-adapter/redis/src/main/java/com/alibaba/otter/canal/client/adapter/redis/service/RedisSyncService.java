@@ -1,6 +1,7 @@
 package com.alibaba.otter.canal.client.adapter.redis.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.alibaba.otter.canal.client.adapter.redis.config.MappingConfig;
 import com.alibaba.otter.canal.client.adapter.support.Dml;
 import com.googlecode.aviator.AviatorEvaluator;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -39,7 +41,8 @@ public class RedisSyncService {
 
         redisTemplate =new RedisTemplate();
         redisTemplate.setConnectionFactory(jedisConnectionFactory);
-
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new FastJsonRedisSerializer<>(Object.class));
         redisTemplate.afterPropertiesSet();
     }
 
