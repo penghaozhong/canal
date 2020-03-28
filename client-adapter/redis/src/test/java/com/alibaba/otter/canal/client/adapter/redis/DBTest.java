@@ -30,7 +30,7 @@ public class DBTest {
 
         RedisStandaloneConfiguration standaloneConfiguration = new RedisStandaloneConfiguration();
 //        standaloneConfiguration.setHostName("10.12.0.40");
-        standaloneConfiguration.setHostName("localhost");
+        standaloneConfiguration.setHostName("127.0.0.1");
         standaloneConfiguration.setPort(6379);
         standaloneConfiguration.setDatabase(0);
         standaloneConfiguration.setPassword(RedisPassword.of("MBkMl4cssBcbet1W"));
@@ -44,8 +44,7 @@ public class DBTest {
 
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(jedisConnectionFactory);
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new FastJsonRedisSerializer<>(Object.class));
         redisTemplate.afterPropertiesSet();
 

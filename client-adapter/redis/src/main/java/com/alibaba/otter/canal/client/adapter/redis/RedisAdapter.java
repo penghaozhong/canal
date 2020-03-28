@@ -67,6 +67,7 @@ public class RedisAdapter implements OuterAdapter {
             standaloneConfiguration.setHostName(properties.get("hostName"));
             standaloneConfiguration.setPort(Integer.parseInt(properties.get("port")));
             standaloneConfiguration.setPassword(RedisPassword.of(properties.get("password")));
+            standaloneConfiguration.setDatabase(0);
 
             redisSyncService= new RedisSyncService(standaloneConfiguration);
 

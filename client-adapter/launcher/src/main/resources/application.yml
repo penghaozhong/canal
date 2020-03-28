@@ -30,7 +30,7 @@ canal.conf:
       outerAdapters:
         - name: redis
           properties:
-              host: 10.12.0.40
+              hostName: 127.0.0.1
               port: 6379
               password: MBkMl4cssBcbet1W
         - name: logger
