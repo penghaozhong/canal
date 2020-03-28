@@ -24,3 +24,5 @@ redisMapping:
 #4. value序列化支持 目前支持三种StringRedisSerializer;FastJsonRedisSerializer;Jackson2JsonRedisSerializer
 #5. redis连接配置
 #6. 条件表达式支持condition   已经完成
+#7. redis客户端需要支持集群版本,目前是单机
+#8. 多表支持
