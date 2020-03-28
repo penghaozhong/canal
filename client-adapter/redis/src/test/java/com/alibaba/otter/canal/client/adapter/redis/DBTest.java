@@ -10,7 +10,6 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import redis.clients.jedis.JedisPoolConfig;
 
 @Ignore
 public class DBTest {
@@ -18,13 +17,6 @@ public class DBTest {
     @Test
     public void test01() throws SQLException {
 
-        JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(200);
-        config.setMaxIdle(50);
-        config.setMinIdle(8);//设置最小空闲数
-        config.setMaxWaitMillis(10000);
-        config.setTestOnBorrow(true);
-        config.setTestOnReturn(true);
 
         RedisStandaloneConfiguration standaloneConfiguration = new RedisStandaloneConfiguration();
 //        standaloneConfiguration.setHostName("10.12.0.40");
@@ -34,7 +26,6 @@ public class DBTest {
         standaloneConfiguration.setPassword(RedisPassword.of("MBkMl4cssBcbet1W"));
 
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(standaloneConfiguration);
-        jedisConnectionFactory.setPoolConfig(config);
 
         System.out.println("jedisConnectionFactory.getDatabase() = " + jedisConnectionFactory.getDatabase());
 
