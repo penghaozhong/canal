@@ -18,9 +18,9 @@ redisMapping:
 
 
 #由于redis客户端我们使用的是spring-data-redis，因为拥有很多已集成好的功能了。
-#1. 需要做数据库字段对应 columns 支持一个和多个
+#1. 需要做数据库字段对应 columns 支持一个和多个  已经完成
 #2. redis keyType设置 常用类型支持如String List Set Zset Hash 等
 #3. redis key 设置     已经完成
 #4. value序列化支持 目前支持三种StringRedisSerializer;FastJsonRedisSerializer;Jackson2JsonRedisSerializer
 #5. redis连接配置
-#6. 条件表达式支持condition
+#6. 条件表达式支持condition   已经完成

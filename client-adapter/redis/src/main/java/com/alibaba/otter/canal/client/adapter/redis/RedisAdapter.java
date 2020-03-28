@@ -16,6 +16,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 
+/**
+ * @author penghaozhong
+ * @time 2020-03-28 22:23:26
+ * @version  1.0.0
+ */
 @SPI("redis")
 public class RedisAdapter implements OuterAdapter {
 

@@ -105,10 +105,9 @@ public class RedisSyncService {
                     setData(redisMapping, r);
                     continue;
                 }
+            }else {
+                setData(redisMapping, r);
             }
-
-            setData(redisMapping, r);
-
         }
     }
 

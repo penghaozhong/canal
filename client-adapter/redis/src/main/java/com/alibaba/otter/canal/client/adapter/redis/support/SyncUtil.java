@@ -7,6 +7,12 @@ import org.springframework.util.CollectionUtils;
 
 public class SyncUtil {
 
+    /**
+     * 对象映射方法
+     * @param redisMapping
+     * @param data
+     * @return
+     */
     public static Map<String, Object> getTargetMap(MappingConfig.RedisMapping redisMapping, Map<String, Object> data) {
         Map<String, Object> newMap = new HashMap<>();
         if (redisMapping.isMapAll()) {
