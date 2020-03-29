@@ -5,7 +5,7 @@ redisMapping:
   database: mryt_vip  # 数据库名
   table: t_vip_base_info     # 数据库表名
   keyType: SET  #redis数据类型 支持STRING,LIST,HASH,SET,ZSET,GEO
-  key: "'com:mryt:viptests:'+ user_id"  # redis的key
+  key: "com:mryt:viptests:set"  # redis的key "'com:mryt:viptests:'+ user_id"
 # mapAll: true
   targetPropertys:
     # 数据库字段:redis对应字段
