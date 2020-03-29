@@ -3,6 +3,7 @@ package com.alibaba.otter.canal.client.adapter.redis.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.alibaba.otter.canal.client.adapter.redis.config.MappingConfig;
+import com.alibaba.otter.canal.client.adapter.redis.support.RedisOpsStrategy;
 import com.alibaba.otter.canal.client.adapter.redis.support.SyncUtil;
 import com.alibaba.otter.canal.client.adapter.support.Dml;
 import com.googlecode.aviator.AviatorEvaluator;
@@ -26,6 +27,8 @@ public class RedisSyncService {
     private static final Logger logger  = LoggerFactory.getLogger(RedisSyncService.class);
 
     private RedisTemplate redisTemplate;
+
+    private RedisOpsStrategy redisOpsStrategy;
 
     public RedisSyncService(RedisStandaloneConfiguration configuration) {
 
@@ -52,8 +55,8 @@ public class RedisSyncService {
         FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         redisTemplate.setValueSerializer(fastJsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
-
         RedisConnectionUtils.getConnection(jedisConnectionFactory).close();
+        redisOpsStrategy = new RedisOpsStrategy(redisTemplate);
     }
 
 
@@ -61,13 +64,11 @@ public class RedisSyncService {
         if (config != null) {
             String type = dml.getType();
             if (type != null && type.equalsIgnoreCase("INSERT")) {
-                logger.info("{}",dml);
-                insert(config,dml);
+                update(config,dml);
             } else if (type != null && type.equalsIgnoreCase("UPDATE")) {
-                logger.info("{}",dml);
                 update(config, dml);
             } else if (type != null && type.equalsIgnoreCase("DELETE")) {
-                logger.info("{}",dml);
+                delete(config,dml);
             }
         }
     }
@@ -78,19 +79,6 @@ public class RedisSyncService {
      * @param config 配置项
      * @param dml DML数据
      */
-    private void insert(MappingConfig config, Dml dml) {
-        List<Map<String, Object>> data = dml.getData();
-        if (data == null || data.isEmpty()) {
-            return;
-        }
-
-        MappingConfig.RedisMapping hbaseMapping =config.getRedisMapping();
-
-        for (Map<String, Object> r : data) {
-            redisTemplate.opsForValue().set(hbaseMapping.getKey(), JSON.toJSON(r));
-        }
-    }
-
     private void update(MappingConfig config, Dml dml) {
         List<Map<String, Object>> data = dml.getData();
         if (data == null || data.isEmpty()) {
@@ -102,20 +90,48 @@ public class RedisSyncService {
             //condition
             if (StringUtils.isNotBlank(redisMapping.getCondition())) {
                 if ((boolean)AviatorEvaluator.execute(redisMapping.getCondition(), r)) {
-                    setData(redisMapping, r);
+                    updateData(redisMapping, r);
                     continue;
                 }
             }else {
-                setData(redisMapping, r);
+                updateData(redisMapping, r);
+            }
+        }
+    }
+
+    private void delete(MappingConfig config, Dml dml) {
+        List<Map<String, Object>> data = dml.getData();
+        if (data == null || data.isEmpty()) {
+            return;
+        }
+
+        MappingConfig.RedisMapping redisMapping =config.getRedisMapping();
+        for (Map<String, Object> r : data) {
+            //condition
+            if (StringUtils.isNotBlank(redisMapping.getCondition())) {
+                if ((boolean)AviatorEvaluator.execute(redisMapping.getCondition(), r)) {
+                    deleteData(redisMapping, r);
+                    continue;
+                }
+            }else {
+                deleteData(redisMapping, r);
             }
         }
     }
 
 
-    private void setData(MappingConfig.RedisMapping redisMapping,Map<String, Object> data){
+    private void updateData(MappingConfig.RedisMapping redisMapping,Map<String, Object> data){
         String key = (String)AviatorEvaluator.execute(redisMapping.getKey(), data);
         Map<String, Object> targetMap = SyncUtil.getTargetMap(redisMapping, data);
-        logger.info("redisTemplate-key={}",key);
-        redisTemplate.opsForValue().set(key, targetMap);
+        logger.info("redisTemplate-updateData-key={}",key);
+        redisOpsStrategy.getService(redisMapping.getKeyType()).add(key,targetMap);
     }
+
+    private void deleteData(MappingConfig.RedisMapping redisMapping,Map<String, Object> data){
+        String key = (String)AviatorEvaluator.execute(redisMapping.getKey(), data);
+        Map<String, Object> targetMap = SyncUtil.getTargetMap(redisMapping, data);
+        logger.info("redisTemplate-deleteData-key={}",key);
+        redisOpsStrategy.getService(redisMapping.getKeyType()).delete(key,targetMap);
+    }
+
 }
