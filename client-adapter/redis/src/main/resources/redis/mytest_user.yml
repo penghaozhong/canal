@@ -4,7 +4,7 @@ groupId: g1
 redisMapping:
   database: mryt_vip  # 数据库名
   table: t_vip_base_info     # 数据库表名
-  keyType: SET  #对应redis里面的类型
+  keyType: SET  #redis数据类型 支持STRING,LIST,HASH,SET,ZSET,GEO
   key: "'com:mryt:viptests:'+ user_id"  # redis的key
 # mapAll: true
   targetPropertys:
