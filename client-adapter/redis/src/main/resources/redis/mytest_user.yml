@@ -5,24 +5,24 @@ redisMapping:
   database: mryt_vip  # 数据库名
   table: t_vip_base_info     # 数据库表名
   keyType: SET  #redis数据类型 支持STRING,LIST,HASH,SET,ZSET,GEO
-  key: "com:mryt:viptests:set"  # redis的key "'com:mryt:viptests:'+ user_id"
+  key: "'com:mryt:viptests:set'"  # redis的key "'com:mryt:viptests:'+ user_id"
 # mapAll: true
   targetPropertys:
     # 数据库字段:redis对应字段
     user_id: userId
-    nick_name: nickName
-    phone_number: phoneNumber
-    invite_user_id: inviteUserId
-    portrait: portrait
-  condition: "level==2"
+    #nick_name: nickName
+    #phone_number: phoneNumber
+    #invite_user_id: inviteUserId
+    #portrait: portrait
+#  condition: "level==2"
 
 
 #由于redis客户端我们使用的是spring-data-redis，因为拥有很多已集成好的功能了。
 #1. 需要做数据库字段对应 columns 支持一个和多个  已经完成
-#2. redis keyType设置 常用类型支持如String List Set Zset Hash 等
+#2. redis keyType设置 常用类型支持如String List Set Zset Hash GEO 等 已经完成
 #3. redis key 设置     已经完成
 #4. value序列化支持 目前支持三种StringRedisSerializer;FastJsonRedisSerializer;Jackson2JsonRedisSerializer
-#5. redis连接配置
+#5. redis连接配置 已经完成
 #6. 条件表达式支持condition   已经完成
 #7. redis客户端需要支持集群版本,目前是单机
 #8. 多表支持

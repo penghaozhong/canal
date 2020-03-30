@@ -30,19 +30,11 @@ public class RedisSyncService {
 
     private RedisOpsStrategy redisOpsStrategy;
 
-    public RedisSyncService(RedisStandaloneConfiguration configuration) {
-
-        JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(200);
-        config.setMaxIdle(50);
-        config.setMinIdle(8);
-        config.setMaxWaitMillis(10000);
-        config.setTestOnBorrow(true);
-        config.setTestOnReturn(true);
+    public RedisSyncService(JedisPoolConfig jedisPoolConfig,RedisStandaloneConfiguration configuration) {
 
         JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder()
             .usePooling()
-            .poolConfig(config)
+            .poolConfig(jedisPoolConfig)
             .build();
 
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(configuration, jedisClientConfiguration);

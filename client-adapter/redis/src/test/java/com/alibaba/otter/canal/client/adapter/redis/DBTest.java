@@ -35,11 +35,10 @@ public class DBTest {
 
 
         RedisStandaloneConfiguration standaloneConfiguration = new RedisStandaloneConfiguration();
-//        standaloneConfiguration.setHostName("10.12.0.40");
         standaloneConfiguration.setHostName("127.0.0.1");
         standaloneConfiguration.setPort(6379);
         standaloneConfiguration.setDatabase(0);
-        standaloneConfiguration.setPassword(RedisPassword.of("MBkMl4cssBcbet1W"));
+        standaloneConfiguration.setPassword(RedisPassword.of("123456"));
 
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(standaloneConfiguration, jedisClientConfiguration);
         jedisConnectionFactory.afterPropertiesSet();

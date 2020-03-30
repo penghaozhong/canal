@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * @author penghaozhong
@@ -72,9 +73,35 @@ public class RedisAdapter implements OuterAdapter {
             standaloneConfiguration.setHostName(properties.get("hostName"));
             standaloneConfiguration.setPort(Integer.parseInt(properties.get("port")));
             standaloneConfiguration.setPassword(RedisPassword.of(properties.get("password")));
-            standaloneConfiguration.setDatabase(0);
+            Integer database = Integer.parseInt(properties.get("database"));
+            if (database != null) {
+                standaloneConfiguration.setDatabase(database);
+            }
 
-            redisSyncService= new RedisSyncService(standaloneConfiguration);
+            JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+            Integer maxTotal = Integer.parseInt(properties.get("maxTotal"));
+            if (maxTotal != null) {
+                jedisPoolConfig.setMaxTotal(maxTotal);
+            }
+            Integer maxIdle = Integer.parseInt(properties.get("maxIdle"));
+            if (maxIdle != null) {
+                jedisPoolConfig.setMaxIdle(maxIdle);
+            }
+
+            Integer minIdle = Integer.parseInt(properties.get("minIdle"));
+            if (minIdle != null) {
+                jedisPoolConfig.setMinIdle(minIdle);
+            }
+
+            Integer maxWaitMillis = Integer.parseInt(properties.get("maxWaitMillis"));
+            if (maxWaitMillis != null) {
+                jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+            }
+
+            jedisPoolConfig.setTestOnBorrow(true);
+            jedisPoolConfig.setTestOnReturn(true);
+
+            redisSyncService= new RedisSyncService(jedisPoolConfig,standaloneConfiguration);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
