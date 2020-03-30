@@ -1,16 +1,11 @@
 package com.alibaba.otter.canal.client.adapter.redis.config;
 
 import com.alibaba.otter.canal.client.adapter.support.AdapterConfig;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 /**
- * RDB表映射配置
- *
- * @author rewerma 2018-11-07 下午02:41:34
- * @version 1.0.0
+ * redis表映射配置
  */
 public class MappingConfig implements AdapterConfig {
 

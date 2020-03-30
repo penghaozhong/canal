@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * HBase表映射配置加载器
- *
- * @author rewerma 2018-8-21 下午06:45:49
- * @version 1.0.0
+ * redis表映射配置加载器
  */
 public class MappingConfigLoader {
 
