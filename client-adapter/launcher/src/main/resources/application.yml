@@ -24,16 +24,27 @@ canal.conf:
 #      username: root
 #      password: 121212
   canalAdapters:
-  - instance: mryt_vip_t_vip_base_info2 # canal instance Name or mq topic name
+  - instance: mryt_vip_t_vip_base_info # canal instance Name or mq topic name
     groups:
-    - groupId: g1
+    - groupId: mryt_vip_t_vip_base_info
       outerAdapters:
         - name: redis
           properties:
-              hostName: 127.0.0.1
+              hostName: 10.12.0.40
               port: 6379
               password: MBkMl4cssBcbet1W
-        - name: logger
+
+  - instance: mryt_cps_activity_t_cps_donate_vip_bills # canal instance Name or mq topic name
+    groups:
+      - groupId: mryt_cps_activity_t_cps_donate_vip_bills
+        outerAdapters:
+          - name: redis
+            properties:
+              hostName: 10.12.0.40
+              port: 6379
+              password: MBkMl4cssBcbet1W
+
+#        - name: logger
 #      - name: rdb
 #        key: mysql1
 #        properties:

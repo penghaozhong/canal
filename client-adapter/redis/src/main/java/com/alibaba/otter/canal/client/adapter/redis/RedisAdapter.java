@@ -73,29 +73,45 @@ public class RedisAdapter implements OuterAdapter {
             standaloneConfiguration.setHostName(properties.get("hostName"));
             standaloneConfiguration.setPort(Integer.parseInt(properties.get("port")));
             standaloneConfiguration.setPassword(RedisPassword.of(properties.get("password")));
-            Integer database = Integer.parseInt(properties.get("database"));
-            if (database != null) {
-                standaloneConfiguration.setDatabase(database);
+            String databaseStr = properties.get("database");
+            if (StringUtils.isNotBlank(databaseStr)) {
+                Integer database = Integer.parseInt(databaseStr);
+                if (database != null) {
+                    standaloneConfiguration.setDatabase(database);
+                }
             }
 
             JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-            Integer maxTotal = Integer.parseInt(properties.get("maxTotal"));
-            if (maxTotal != null) {
-                jedisPoolConfig.setMaxTotal(maxTotal);
-            }
-            Integer maxIdle = Integer.parseInt(properties.get("maxIdle"));
-            if (maxIdle != null) {
-                jedisPoolConfig.setMaxIdle(maxIdle);
-            }
-
-            Integer minIdle = Integer.parseInt(properties.get("minIdle"));
-            if (minIdle != null) {
-                jedisPoolConfig.setMinIdle(minIdle);
+            String maxTotalStr = properties.get("maxTotal");
+            if (StringUtils.isNotBlank(maxTotalStr)) {
+                Integer maxTotal = Integer.parseInt(maxTotalStr);
+                if (maxTotal != null) {
+                    jedisPoolConfig.setMaxTotal(maxTotal);
+                }
             }
 
-            Integer maxWaitMillis = Integer.parseInt(properties.get("maxWaitMillis"));
-            if (maxWaitMillis != null) {
-                jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+            String maxIdleStr = properties.get("maxIdle");
+            if (StringUtils.isNotBlank(maxIdleStr)) {
+                Integer maxIdle = Integer.parseInt(maxIdleStr);
+                if (maxIdle != null) {
+                    jedisPoolConfig.setMaxIdle(maxIdle);
+                }
+            }
+
+            String minIdleStr = properties.get("minIdle");
+            if (StringUtils.isNotBlank(minIdleStr)) {
+                Integer minIdle = Integer.parseInt(minIdleStr);
+                if (minIdle != null) {
+                    jedisPoolConfig.setMinIdle(minIdle);
+                }
+            }
+
+            String maxWaitMillisStr = properties.get("maxWaitMillis");
+            if (StringUtils.isNotBlank(maxWaitMillisStr)) {
+                Integer maxWaitMillis = Integer.parseInt(maxWaitMillisStr);
+                if (maxWaitMillis != null) {
+                    jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+                }
             }
 
             jedisPoolConfig.setTestOnBorrow(true);

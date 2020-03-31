@@ -3,6 +3,9 @@ package com.alibaba.otter.canal.client.adapter.redis;
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.alibaba.otter.canal.client.adapter.redis.config.MappingConfig;
 import java.sql.SQLException;
+import java.util.Map;
+
+import com.google.common.collect.Maps;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.data.redis.connection.RedisPassword;
@@ -35,10 +38,10 @@ public class DBTest {
 
 
         RedisStandaloneConfiguration standaloneConfiguration = new RedisStandaloneConfiguration();
-        standaloneConfiguration.setHostName("127.0.0.1");
+        standaloneConfiguration.setHostName("10.12.0.40");
         standaloneConfiguration.setPort(6379);
         standaloneConfiguration.setDatabase(0);
-        standaloneConfiguration.setPassword(RedisPassword.of("123456"));
+        standaloneConfiguration.setPassword(RedisPassword.of("MBkMl4cssBcbet1W"));
 
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(standaloneConfiguration, jedisClientConfiguration);
         jedisConnectionFactory.afterPropertiesSet();
@@ -68,6 +71,13 @@ public class DBTest {
         redisTemplate.opsForValue().set("com:mryt:viptests:226739",mappingConfig);
 
         System.out.println("testobject=" + redisTemplate.opsForValue().get("testobject"));
+
+        Map<String,String> map = Maps.newHashMap();
+        map.put("userId", "33");
+
+        redisTemplate.boundZSetOps("mryt:activity:liveequitys:test11").add(map, System.currentTimeMillis());
+
+        redisTemplate.boundZSetOps("mryt:activity:liveequitys:test11").add(map,System.currentTimeMillis());
 
     }
 }
